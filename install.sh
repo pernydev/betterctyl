@@ -1,9 +1,34 @@
 #!/bin/bash
+#Visual stuff
+function print_warning {
+  COLOR_YELLOW='\033[1;33m'
+  COLOR_NC='\033[0m'
+  echo ""
+  echo -e "* ${COLOR_YELLOW}WARNING${COLOR_NC}: $1"
+  echo ""
+}
+
+function print_error {
+  COLOR_RED='\033[0;31m'
+  COLOR_NC='\033[0m'
+
+  echo ""
+  echo -e "* ${COLOR_RED}ERROR${COLOR_NC}: $1"
+  echo ""
+}
 
 COLOR_CYAN=''
 RESET=''
 bold=$(tput bold)
 normal=$(tput sgr0)
+
+#Install required packages
+REQUIRED_PKG="nodejs"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG|grep "install ok installed")
+if [ "" = "$PKG_OK" ]; then
+  echo "No $REQUIRED_PKG. Setting up $REQUIRED_PKG."
+  sudo apt-get --yes install $REQUIRED_PKG 
+fi
 
 rebuild_panel()
 {
@@ -31,10 +56,6 @@ install_dracula()
      clear
      echo "${bold}############################################################################${normal}"
      echo "* ${bold}Starting installation...${RESET}"
-     echo "* ${bold}Installing NodeJS...${RESET}"
-     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - && apt install -y nodejs
-     clear
-     echo "${bold}############################################################################${normal}"
      echo "* ${bold}Installing Yarn...${RESET}"
      echo " "
      npm i -g yarn
@@ -49,15 +70,17 @@ install_dracula()
      clear
      echo "${bold}############################################################################${normal}"
      echo "* ${bold}Installing CSS...${RESET}"
-     echo "* ${bold}Installing User Interface...${RESET}"
-     cd resources/
-     touch scripts/main.css
-     echo "@import url('https://lellisv2.github.io/Ptero-Themes-v1/latest/Dracula/user.css');" >> scripts/main.css
-     rm -rf index.tsx
-     cd scripts/
-     wget https://raw.githubusercontent.com/pernydev/betterctyl/main/files/index.tsx
-     cd ../..
-     if [ "$draculaInstall" -eq 2 ] 
+     if [ "$draculaInstall" -eq 1 ] 
+     then
+       echo "* ${bold}Installing User Interface...${RESET}"
+       cd resources/
+       touch scripts/main.css
+       echo "@import url('https://lellisv2.github.io/Ptero-Themes-v1/latest/Dracula/user.css');" >> scripts/main.css
+       cd scripts/
+       rm -rf index.tsx
+       wget https://raw.githubusercontent.com/pernydev/betterctyl/main/files/index.tsx
+       cd ../..
+     elif [ "$draculaInstall" -eq 2 ] 
      then
        echo "* ${bold}Installing Admin panel...${RESET}"
        cd resources/views/layouts/
@@ -65,13 +88,29 @@ install_dracula()
        wget https://raw.githubusercontent.com/pernydev/betterctyl/main/files/admin.blade.php
        cd ..
        echo "* ${bold}Installing Admin panel...${RESET}"
-     elif [[ "$draculaInstall" -eq 3 ]]; then
+     elif [ "$draculaInstall" -eq 3 ] 
+     then
        cd resources/views/layouts/
        rm -rf admin.blade.php
        wget https://raw.githubusercontent.com/pernydev/betterctyl/main/files/admin.blade.php
        cd ../../..
+       cd resources/
+       touch scripts/main.css
+       echo "@import url('https://lellisv2.github.io/Ptero-Themes-v1/latest/Dracula/user.css');" >> scripts/main.css
+       cd scripts/
+       rm -rf index.tsx
+       wget https://raw.githubusercontent.com/pernydev/betterctyl/main/files/index.tsx
+       cd ../..
+       echo "* ${bold}Installing User Interface...${RESET}"
+       cd resources/
+       touch scripts/main.css
+       echo "@import url('https://lellisv2.github.io/Ptero-Themes-v1/latest/Dracula/user.css');" >> scripts/main.css
+       cd scripts/
+       rm -rf index.tsx
+       wget https://raw.githubusercontent.com/pernydev/betterctyl/main/files/index.tsx
+       cd ../..
      else
-       echo "* ${bold}Error! Unknown package! ${draculaInstall}${RESET}"
+       print_error "${bold}Unknown package! (${draculaInstall})${RESET}"
        choose_template
      fi
      php artisan view:clear
