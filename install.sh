@@ -20,6 +20,7 @@ function print_error {
 COLOR_CYAN=''
 RESET=''
 bold=$(tput bold)
+italic=$(tput italic)
 normal=$(tput sgr0)
 
 #Install required packages
@@ -136,7 +137,6 @@ fi
 
 if ! [ -x "$(command -v curl)" ]; then
   echo "* curl is required in order for this script to work."
-  echo "* install using apt (Debian and derivatives) or yum/dnf (CentOS)"
   exit 1
 fi
 
@@ -162,5 +162,25 @@ choose_template()
 fi
 }
 
+main_menu()
+{
+  echo " "
+  echo "* ${bold}BetterCtyl Script (Version: Stable)${normal}"
+  echo "*"
+  echo "* Copyright (C) 2021, Mineton <support@mineton.co>"
+  echo "* https://github.com/pernydev/betterctyl"
+  echo "*"
+  echo "* This script is made with <3 by Mineton Team."
+  echo "* This script is not associated with the official Pterodactyl Panel."
+  echo "*"
+  echo "* ${bold}What would you like to do?${normal}"
+  echo "* [1] Install a theme"
+  echo "* [2] Install a module (Under construcion)"
+  echo ""
+  echo "* [3] Uninstall a theme."
+  echo "* [4] Uninstall a module. ${italic}(Under construcion)${normal}"
+
+}
+
 # On script run
-choose_template
+main_menu
