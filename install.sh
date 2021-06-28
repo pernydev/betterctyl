@@ -20,7 +20,6 @@ function print_error {
 COLOR_CYAN=''
 RESET=''
 bold=$(tput bold)
-italic=$(tput italic)
 normal=$(tput sgr0)
 
 #Install required packages
@@ -37,7 +36,6 @@ rebuild_panel()
   echo "${bold}############################################################################${normal}"
   echo "* ${bold}Starting to rebuild!${RESET}"
   yarn build:production
-  clear
   install_done
 }
 install_done()
@@ -54,13 +52,11 @@ install_dracula()
   if [[ "$CONFIRM_DRACULA" =~ [Yy] ]] 
   then
      theme_name="Dracula"
-     clear
      echo "${bold}############################################################################${normal}"
      echo "* ${bold}Starting installation...${RESET}"
      echo "* ${bold}Installing Yarn...${RESET}"
      echo " "
      npm i -g yarn
-     clear
      echo "${bold}############################################################################${normal}"
      echo "* ${bold}Going to pterodactyl directory...${RESET}"
      echo " "
@@ -68,7 +64,6 @@ install_dracula()
      echo "* ${bold}Installing required modules...${RESET}"
      echo " "
      yarn install && yarn add @emotion/react
-     clear
      echo "${bold}############################################################################${normal}"
      echo "* ${bold}Installing CSS...${RESET}"
      if [ "$draculaInstall" -eq 1 ] 
@@ -116,7 +111,6 @@ install_dracula()
      fi
      php artisan view:clear
      php artisan cache:clear
-     clear
      echo "${bold}#################################################${normal}"
      echo "* ${bold}Packages installed!${RESET}"
      echo "* ${bold}The following theme is now avalible: Dracula${RESET}"
@@ -152,7 +146,7 @@ choose_template()
     echo "* [2] Admin area"
     echo "* [3] User Interface and Admin area"
     echo "${bold}#########################################${normal}"
-    echo -n "* Wich package do you want to install? (Number): "
+    echo -n "* Wich package do you want to install? (Number between 1-3): "
     read -r draculaInstall
     echo -n "* Do you really want to continue? (y/N): "
     read -r CONFIRM_DRACULA
@@ -165,7 +159,7 @@ fi
 main_menu()
 {
   echo " "
-  echo "* ${bold}BetterCtyl Script (Version: Stable)${normal}"
+  echo "* ${bold}BetterCtyl Script (Version: Beta)${normal}"
   echo "*"
   echo "* Copyright (C) 2021, Mineton <support@mineton.co>"
   echo "* https://github.com/pernydev/betterctyl"
@@ -179,7 +173,9 @@ main_menu()
   echo ""
   echo "* [3] Uninstall a theme. ${italic}(Under construcion)${normal}"
   echo "* [4] Uninstall a module. ${italic}(Under construcion)${normal}"
-
+  echo ""
+  echo "* What do you want to do? (Number between 1-4): "
+  read -r MENU_ACTION
 }
 
 # On script run
