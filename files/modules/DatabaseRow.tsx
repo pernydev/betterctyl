@@ -173,6 +173,10 @@ export default ({ database, className }: Props) => {
                     <p css={tw`mt-1 text-2xs text-neutral-500 uppercase select-none`}>Username</p>
                 </div>
                 <div css={tw`ml-8`}>
+                    <Button isSecondary css={tw`mr-2`} onClick={phpMyAdmin}>
+                        <FontAwesomeIcon icon={faDatabase} fixedWidth/>
+                    </Button>
+                <div css={tw`ml-8`}>
                     <Button isSecondary css={tw`mr-2`} onClick={() => setConnectionVisible(true)}>
                         <FontAwesomeIcon icon={faEye} fixedWidth/>
                     </Button>
