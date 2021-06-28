@@ -177,7 +177,7 @@ main_menu()
   echo "* [1] Install a theme"
   echo "* [2] Install a module (Under construcion)"
   echo ""
-  echo "* [3] Uninstall a theme."
+  echo "* [3] Uninstall a theme. ${italic}(Under construcion)${normal}"
   echo "* [4] Uninstall a module. ${italic}(Under construcion)${normal}"
 
 }
